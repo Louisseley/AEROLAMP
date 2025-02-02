@@ -1,0 +1,150 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.modal{
+   background-color: #0A3981;
+   position: fixed;
+   right: 0;
+   top: 0;
+   bottom: 0;
+}
+
+.border1{
+   border-top: 1px solid white;
+   border-bottom: 1px solid white;
+   color: white;
+}
+.border2{
+   border-bottom: 1px solid white;
+   color: white;
+}
+
+.border3{
+   border: 1px solid #0A3981;
+}
+
+.border4{
+   border-top: 1px solid rgba(0, 0, 0, 0.7);
+}
+
+p, h1, h2, h3, h4, h5, h6{
+   padding: 0;
+   margin: 0;
+}
+
+.transparent{
+   background-color: transparent;
+   border: transparent;
+}
+
+.color{
+   color: white;
+}
+
+.input{
+   border-radius: 10px;
+   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+   padding-left: 50px;
+   font-size: 20px;
+   width: 100%;
+   height: 100%;
+   line-height: 2px;
+   border: none;
+   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+}
+
+.inputicon{
+   width: 30px;
+   height: 30px;
+   position: absolute;
+   top: 50%;
+   left: 10px; 
+   transform: translateY(-50%); 
+
+}
+
+.round{
+   border-radius: 5px;
+   border: none;
+   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+}
+
+.link{
+   color: #2432f0;
+}
+
+.home {
+   background-image: url('../public/images/bg1.jpg'); /* Replace with your image URL */
+   background-size: cover; /* Ensure the image covers the entire page */
+   background-position: center; /* Center the background image */
+   background-repeat: no-repeat; /* Prevent tiling */
+   height: 100vh; /* Make sure it covers the full viewport height */
+   width: 100%;
+   margin: 0;
+   font-family: Arial, sans-serif;
+   z-index: 10;
+}
+
+.hr{
+   border-bottom: 5px solid white;
+}
+
+.bg1{
+   background: rgb(36,84,157);
+   background: linear-gradient(180deg, rgba(36,84,157,1) 0%, rgba(209,219,234,1) 80%, rgba(252,253,254,1) 100%);
+   width: 100%;
+   height: 100vh;
+}
+
+.bg2{
+   background-color: #4CAF50;
+}
+
+.bg3{
+   background: rgb(36,84,157);
+   background: linear-gradient(180deg, rgba(36,84,157,1) 0%, rgba(209,219,234,1) 80%, rgba(252,253,254,1) 100%);
+}
+
+.bg4{
+   background: linear-gradient(to bottom, #003366, #336699);
+}
+.roundedProfile{
+   border-radius: 50%;
+   width: 120px;
+   height: 120px;
+}
+
+/* Container to center the spinner and add a background */
+.loading-container {
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   height: 100vh; /* Full viewport height */
+   background: linear-gradient(135deg, #6a11cb, #2575fc); /* Gradient background */
+   background-size: cover;
+   background-position: center;
+   overflow: hidden;
+   position: relative;
+ }
+ 
+ /* Spinner styles */
+ .spinner {
+   width: 50px;
+   height: 50px;
+   border: 6px solid #f3f3f3; /* Light gray */
+   border-top: 6px solid #fff; /* White for the top border */
+   border-radius: 50%;
+   animation: spin 1s linear infinite; /* Animation for rotating */
+ }
+ 
+ /* Animation to spin the element */
+ @keyframes spin {
+   0% {
+     transform: rotate(0deg);
+   }
+   100% {
+     transform: rotate(360deg);
+   }
+ }
+ 
