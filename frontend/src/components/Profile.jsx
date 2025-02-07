@@ -57,7 +57,7 @@ const Profile = () => {
    return (
       <div className="bg1 flex flex-col items-center justify-start">
          <div className="flex flex-row justify-start items-center w-[70%] mt-[120px]">
-            <img className="roundedProfile" src={user ? `http://localhost:8000${user.profile_image}` : null} alt="profile" />
+            <img className="roundedProfile" src={user.profile_image ? `http://localhost:8000${user.profile_image}` : '../../public/images/default.jpg'} alt="profile" />
             <div className="flex flex-col justify-start items-center ml-[20px] mb-[30px] font-inknut font-normal">
                <h3 className="font-[25px]">Profile Information</h3>
                <p className="font-[20px]">Manage your personal details</p>

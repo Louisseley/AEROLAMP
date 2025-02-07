@@ -12,6 +12,7 @@ const EditProfile = () => {
       last_name: "",
       phone_number: ""
    });
+   const [profileImage, setProfileImage] = useState(null);
 
    const fetchUserProfile = async () => {
       try {
@@ -40,13 +41,28 @@ const EditProfile = () => {
       }));
    };
 
+   const handleImageChange = (e) => {
+      setProfileImage(e.target.files[0]);
+   };
+
    const handleUpdateProfile = async () => {
       try {
-         const response = await AxiosInstance.patch("users/profile/", {
+         const formData = new FormData();
+         formData.append("email", updatedUser.email);
+         formData.append("first_name", updatedUser.first_name);
+         formData.append("last_name", updatedUser.last_name);
+         formData.append("phone_number", updatedUser.phone_number);
+   
+         if (profileImage) {
+            formData.append("profile_image", profileImage);
+         }
+   
+         const response = await AxiosInstance.patch("users/profile/", formData, {
             headers: {
                "Content-Type": "multipart/form-data",
             },
          });
+   
          console.log("Updated Profile:", response.data);
          setUser(response.data);
          alert("Profile updated successfully!");
@@ -56,7 +72,7 @@ const EditProfile = () => {
          alert("Failed to update profile.");
       }
    };
-
+   
    useEffect(() => {
       fetchUserProfile();
    }, []);
@@ -73,46 +89,16 @@ const EditProfile = () => {
          </div>
          <div className="bg1 relative flex flex-col items-center justify-start w-[100%] h-[100%] font-inknut font-normal">
             <div className="flex flex-row items-center justify-center mt-[8%]">
-               <img className="roundedProfile" src={user ? `http://localhost:8000${user.profile_image}` : '../../public/images/default.jpg'} alt="Profile" />
+               <img className="roundedProfile" src={user.profile_image ? `http://localhost:8000${user.profile_image}` : '../../public/images/default.jpg'} alt="Profile" />
                <h3 className="text-[20px] ml-[20px]">Edit Profile Picture</h3>
             </div>
+            <input  className={`mt-[20px] ml-[60px] text-[16px] px-[10px] py-[5px] ${profileImage  ? 'text-[#FF0000]' : 'text-[#00001a]' }`} type="file" onChange={handleImageChange} />
 
-            <input
-               className="w-[20%] px-[10px] py-[5px] mt-[30px]"
-               value={updatedUser.email}
-               name="email"
-               onChange={handleInputChange}
-               type="email"
-               placeholder="Email"
-            />
-            <input
-               className="w-[20%] px-[10px] py-[5px] mt-[20px]"
-               value={updatedUser.first_name}
-               name="first_name"
-               onChange={handleInputChange}
-               type="text"
-               placeholder="First Name"
-            />
-            <input
-               className="w-[20%] px-[10px] py-[5px] mt-[20px]"
-               value={updatedUser.last_name}
-               name="last_name"
-               onChange={handleInputChange}
-               type="text"
-               placeholder="Last Name"
-            />
-            <input
-               className="w-[20%] px-[10px] py-[5px] mt-[20px]"
-               value={updatedUser.phone_number}
-               name="phone_number"
-               onChange={handleInputChange}
-               type="text"
-               placeholder="Phone Number"
-            />
-            <button
-               onClick={handleUpdateProfile}
-               className="border-[#0A3981] px-[30px] py-[8px] color cursor-pointer bg-[#0A3981] mt-[40px]"
-            >
+            <input className="w-[20%] px-[10px] py-[5px] mt-[30px]" value={updatedUser.email} name="email" onChange={handleInputChange} type="email" placeholder="Email" />
+            <input className="w-[20%] px-[10px] py-[5px] mt-[20px]" value={updatedUser.first_name} name="first_name" onChange={handleInputChange} type="text" placeholder="First Name" />
+            <input className="w-[20%] px-[10px] py-[5px] mt-[20px]" value={updatedUser.last_name} name="last_name" onChange={handleInputChange} type="text" placeholder="Last Name" />
+            <input className="w-[20%] px-[10px] py-[5px] mt-[20px]" value={updatedUser.phone_number} name="phone_number" onChange={handleInputChange} type="text" placeholder="Phone Number" />
+            <button onClick={handleUpdateProfile} className="border-[#0A3981] px-[30px] py-[8px] color cursor-pointer bg-[#0A3981] mt-[40px]">
                Confirm
             </button>
          </div>

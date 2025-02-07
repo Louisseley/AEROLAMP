@@ -34,8 +34,8 @@ function App() {
           <Route path="/profile" element={<Profile/>}/>
           <Route path="/editprofile" element={<EditProfile/>}/>
           <Route path="/aerolamp" element={<Aerolamp/>}/>
-          <Route path="/aerolampmodel" element={<AerolampModel/>}/>
-          <Route path="/aerolamp_datahistory" element={<AerolampDataHistory/>}/>
+          <Route path="/aerolamp/:deviceId" element={<AerolampModel />} />
+          <Route path="/aerolamp/history/:deviceId" element={<AerolampDataHistory />}/>
           <Route path="/logout" element={<Logout/>}/>
         </Route>
       </Routes>

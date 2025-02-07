@@ -15,6 +15,9 @@ class UserSerializer(serializers.ModelSerializer):
       instance.last_name = validated_data.get('last_name', instance.last_name)
       instance.phone_number = validated_data.get('phone_number', instance.phone_number)
 
+      if "profile_image" in validated_data:
+         instance.profile_image = validated_data["profile_image"]
+
       instance.save()
       return instance
 

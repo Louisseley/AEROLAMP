@@ -22,9 +22,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'aerolamp_api',
     'users',
     'rest_framework',
-    'rest_framework_simplejwt.token_blacklist',
     'corsheaders',
     'knox',
     'django_rest_passwordreset',
@@ -47,8 +47,10 @@ CORS_ALLOWED_ORIGINS = [
 
 AUTH_USER_MODEL = "users.Customuser"
 ROOT_URLCONF = 'backend.urls'
+
+
 AUTHENTICATION_BACKENDS = [
-    "django.contrib.auth.backends.ModelBackend",  # This is the correct backend for your auth
+    "django.contrib.auth.backends.ModelBackend",  # Keep this as fallback
 ]
 
 TEMPLATES = [
@@ -76,7 +78,7 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
     ],
-    'KNOX_TOKEN_TTL': timedelta(days=7),  
+    'KNOX_TOKEN_TTL': timedelta(days=7),
 }
 
 
