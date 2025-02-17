@@ -44,6 +44,7 @@ MIDDLEWARE = [
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:5173',
 ]
+CORS_ALLOW_ALL_ORIGINS = True
 
 AUTH_USER_MODEL = "users.Customuser"
 ROOT_URLCONF = 'backend.urls'
@@ -78,7 +79,6 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
     ],
-    'KNOX_TOKEN_TTL': timedelta(days=7),
 }
 
 

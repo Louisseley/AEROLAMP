@@ -80,4 +80,7 @@ class AirQualityDataCreateSerializer(serializers.Serializer):
       no2 = validated_data['no2']
 
       # Calculate AQI using the validated data
+      aqi = calculate_air_quality_index(ozone, pm, co, so2, no2)  # Get the AQI value
+
+      # Save the air quality data entry with the calculated AQI
       return AirQualityData.save_air_quality_data(device, ozone, pm, co, so2, no2)

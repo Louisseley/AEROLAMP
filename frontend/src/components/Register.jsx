@@ -79,62 +79,62 @@ const Register = () => {
    const getMarginTop = (error) => (error ? 'mt-[5px]' : 'mt-[5%]');
 
    return (
-      <div className="bg-cover bg-center bg-no-repeat h-screen flex items-start justify-center" style={{ backgroundImage: "url('../../public/images/bg1.jpg')" }}>
-         <div className="w-[40%] h-[90%] flex flex-col items-center">
-            <div className="flex flex-row items-center justify-center w-[100%] h-[20px] mt-[50px]">
-               <img className="w-[50px] h-[50px]" src="../../public/images/logoA.svg" alt="" />
-               <h3 className="font-inknut text-[30px] font-normal color ml-[10px]">Aerolamp</h3>
+      <div className="bg-cover bg-center bg-no-repeat h-screen flex items-start justify-center" style={{ backgroundImage: "url('/images/bg1.jpg')" }}>
+         <div className="w-auto h-[90%] flex flex-col items-center">
+            <div className="flex flex-row items-center justify-center w-[100%] h-[20px] mt-[50px] margin">
+               <img className="w-[50px] h-[50px] logo" src="/images/logoA.svg" alt="" />
+               <h3 className="font-inknut text-[30px] font-normal color ml-[10px] text2">Aerolamp</h3>
             </div>
-            <h1 className="font-inknut text-[28px] font-normal color mt-[5%]">Sign up</h1>
-            <h3 onClick={() => navigate('/login')} className='link text-[12px] cursor-pointer'>Login</h3>
-            <p className="font-inknut text-[16px] font-normal color mt-[1%]">Please enter your Email and Password</p>
+            <h1 className="font-inknut text-[28px] font-normal color mt-[5%] signup">Sign up</h1>
+            <h3 onClick={() => navigate('/login')} className='link text-[12px] cursor-pointer login1'>Login</h3>
+            <p className="font-inknut text-[16px] font-normal color mt-[1%] text w-auto">Please enter your Email and Password</p>
             <form onSubmit={handleSubmit(submission)} className="w-[100%] h-[100%] flex flex-col items-center justify-center">
                {errors.email && <p className="text-[#F87171] text-sm mt-[5px]">{errors.email.message}</p>}
-               <div className={`w-[70%] h-[90%] flex items-center justify-center relative ${getMarginTop(errors.email)}`}>
+               <div className={`w-[80%] h-[90%] flex items-center justify-center relative ${getMarginTop(errors.email)}`}>
                   <input {...register("email")} className="input" type="text" placeholder="Username" />
-                  <img className="inputicon" src="../../public/icons/mail.svg" alt="" />
+                  <img className="inputicon inputicon1" src="/icons/mail.svg" alt="" />
                </div>
 
                {errors.first_name && <p className="text-[#F87171] text-sm mt-[5px]">{errors.first_name.message}</p>}
-               <div className={`w-[70%] h-[90%] flex items-center justify-center relative ${getMarginTop(errors.first_name)}`}>
+               <div className={`w-[80%] h-[90%] flex items-center justify-center relative ${getMarginTop(errors.first_name)}`}>
                   <input {...register("first_name")} className="input" type="text" placeholder="First Name" />
-                  <img className="inputicon" src="../../public/icons/user.svg" alt="" />
+                  <img className="inputicon inputicon1" src="/icons/user.svg" alt="" />
                </div>
 
                {errors.last_name && <p className="text-[#F87171] text-sm mt-[5px]">{errors.last_name.message}</p>}
-               <div className={`w-[70%] h-[90%] flex items-center justify-center relative ${getMarginTop(errors.last_name)}`}>
+               <div className={`w-[80%] h-[90%] flex items-center justify-center relative ${getMarginTop(errors.last_name)}`}>
                   <input {...register("last_name")} className="input" type="text" placeholder="Last Name" />
-                  <img className="inputicon" src="../../public/icons/user.svg" alt="" />
+                  <img className="inputicon inputicon1" src="/icons/user.svg" alt="" />
                </div>
 
                {errors.phone_number && <p className="text-[#F87171] text-sm mt-[5px]">{errors.phone_number.message}</p>}
-               <div className={`w-[70%] h-[90%] flex items-center justify-center relative ${getMarginTop(errors.phone_number)}`}>
+               <div className={`w-[80%] h-[90%] flex items-center justify-center relative ${getMarginTop(errors.phone_number)}`}>
                   <input {...register("phone_number")} className="input" type="text" placeholder="Phone Number" />
-                  <img className="inputicon" src="../../public/icons/phone.svg" alt="" />
+                  <img className="inputicon inputicon1" src="/icons/phone.svg" alt="" />
                </div>
 
                {errors.password && <p className="text-[#F87171] text-sm mt-[5px]">{errors.password.message}</p>}
-               <div className={`w-[70%] h-[90%] flex items-center justify-center relative ${getMarginTop(errors.password)}`}>
+               <div className={`w-[80%] h-[90%] flex items-center justify-center relative ${getMarginTop(errors.password)}`}>
                   <input {...register("password")} className="input" type="password" placeholder="Password" />
-                  <img className="inputicon" src="../../public/icons/key.svg" alt="" />
+                  <img className="inputicon inputicon1" src="/icons/key.svg" alt="" />
                </div>
 
                {errors.confirm_password && <p className="text-[#F87171] text-sm mt-[5px]">{errors.confirm_password.message}</p>}
-               <div className={`w-[70%] h-[90%] flex items-center justify-center relative ${getMarginTop(errors.confirm_password)}`}>
+               <div className={`w-[80%] h-[90%] flex items-center justify-center relative ${getMarginTop(errors.confirm_password)}`}>
                   <input {...register("confirm_password")} className="input" type="password" placeholder="Confirm Password" />
-                  <img className="inputicon" src="../../public/icons/key.svg" alt="" />
+                  <img className="inputicon inputicon1" src="/icons/key.svg" alt="" />
                </div>
 
                {errors.profile_image && <p className="text-[#F87171] text-sm mt-[5px]">{errors.profile_image.message}</p>}
-               <div className={`w-[70%] h-[90%] flex items-center justify-center relative ${getMarginTop(errors.confirm_password)}`}>
+               <div className={`w-[80%] h-[90%] flex items-center justify-center relative ${getMarginTop(errors.confirm_password)}`}>
                   <input
                         {...register("profile_image")}
-                        className="input text-[#00001a]"
+                        className="w-[100%] px-[10px] py-[5px] text-[18px] ml-[40px] file-upload text1 text-[#00001a]"
                         type="file"
                         accept="image/jpeg, image/png"
                      />
                </div>
-               <button type={"submit"} className="font-inknut font-normal text-[20px] px-[10px] py-[5px] round mt-[5%] cursor-pointer">Sign Up</button>
+               <button type={"submit"} className="font-inknut font-normal text-[20px] px-[10px] py-[5px] round mt-[5%] cursor-pointer text1">Sign Up</button>
             </form>
          </div>
       </div>

@@ -16,10 +16,10 @@ AxiosInstance.interceptors.request.use(
       const token = localStorage.getItem('Token');
       if (token) {
          console.log('Adding token to headers:', token);
-         config.headers.Authorization = `Token ${token}`;
+         config.headers['Authorization'] = `Token ${token}`;
       } else {
          console.log('No token found');
-         config.headers.Authorization = null;
+         config.headers['Authorization'] = null;
       }
       return config;
    },

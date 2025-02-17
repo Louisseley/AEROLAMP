@@ -4,6 +4,7 @@ import { Line } from "react-chartjs-2";
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from "chart.js";
 import Loading from "./Ocomponents/Loading";
 import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 // Registering chart.js components
 ChartJS.register(
    CategoryScale,
@@ -19,6 +20,8 @@ const AerolampDataHistory = () => {
    const { deviceId } = useParams();
    const [selectedYear, setSelectedYear] = useState(new Date().getFullYear()); // Default to current year
    const [monthlyData, setMonthlyData] = useState([]);
+   const [size, setSize] = useState(false);
+   const navigate = useNavigate()
 
    useEffect(() => {
       const fetchData = async () => {
@@ -106,40 +109,76 @@ const AerolampDataHistory = () => {
          }
       }
    };
+   useEffect(() => {
+      const handleResize = () => {
+         if (window.innerWidth <= 360 && window.innerHeight <= 640) {
+            setSize(true);  // Set the state to true if the screen size is 360x640
+         } else {
+            setSize(false); // Otherwise set it to false
+         }
+      };
+
+      handleResize();
+
+      // Add event listener for window resize
+      window.addEventListener("resize", handleResize);
+
+      // Clean up the event listener on component unmount
+      return () => {
+         window.removeEventListener("resize", handleResize);
+      };
+   }, []); // Empty array means this effect runs once on mount and on resize
+
+   useEffect(() => {
+      if (!monthlyData || monthlyData.length === 0) {
+         const timer = setTimeout(() => {
+            navigate("/aerolamp")
+         }, 5000) 
+         return () => clearTimeout(timer);
+      }
+   }, [monthlyData, navigate])
+
 
    if (!monthlyData || monthlyData.length === 0) {
       return <Loading />;
    }
 
+   
+
+
    return (
-      <div className="bg1 flex flex-col items-start font-inknut font-normal w-full h-full">
-         <h3 className="text-[28px] bg-[#D4EBF8] px-[25px] py-[5px] ml-[160px] mt-[80px]">Data History</h3>
+      <div className="bg1 flex flex-col items-start font-inknut font-normal w-full h-full aerolamp-history-container">
+         <h3 className="text-[28px] bg-[#D4EBF8] px-[25px] py-[5px] ml-[160px] mt-[80px] aerolamp-history-text">Data History</h3>
          <div className="flex flex-col w-full h-[80vh]">
             {/* Dropdown for Year Selection */}
-            <div className="w-[55%] h-[20%] flex flex-row items-center justify-between">
-            <div className="relative w-[120px] ml-[200px]"> {/* Increased width */}
-               <img 
-                  className="absolute right-[10px] top-[50%] transform -translate-y-1/2 w-[20px] h-[20px] cursor-pointer"
-                  src="../../public/icons/dropdown.svg"
-                  alt="Dropdown"
-               />
-               <select
-                  className="appearance-none color bg-[#003366] text-[22px] w-full py-[5px] pl-[20px] pr-[40px] cursor-pointer border-none"
-                  value={selectedYear}
-                  onChange={(e) => setSelectedYear(e.target.value)} // Update selected year
-               >
-                  {Array.from({ length: 5 }, (_, i) => new Date().getFullYear() - i).map((year) => (
-                     <option key={year} value={year}>{year}</option>
-                  ))}
-               </select>
+            <div className="w-[55%] h-[20%] flex flex-row items-center justify-between aerolamp-history-but-con">
+               <div className="relative w-[120px] ml-[200px] aerolamp-history-text"> {/* Increased width */}
+                  <img 
+                     className="absolute right-[10px] top-[50%] transform -translate-y-1/2 w-[20px] h-[20px] cursor-pointer"
+                     src="../../public/icons/dropdown.svg"
+                     alt="Dropdown"
+                  />
+                  <select
+                     className="appearance-none color bg-[#003366] text-[22px] w-full py-[5px] pl-[20px] pr-[40px] cursor-pointer border-none text1"
+                     value={selectedYear}
+                     onChange={(e) => setSelectedYear(e.target.value)} // Update selected year
+                  >
+                     {Array.from({ length: 5 }, (_, i) => new Date().getFullYear() - i).map((year) => (
+                        <option key={year} value={year}>{year}</option>
+                     ))}
+                  </select>
+               </div>
+               <h3 className="bg-[#D4EBF8] text-[18px] px-[20px] py-[5px] ml-[5%] text1">Pollutant Data</h3>
             </div>
-               <h3 className="bg-[#D4EBF8] text-[18px] px-[20px] py-[5px] ml-[5%]">Pollutant Data</h3>
-            </div>
-
             {/* Graph Display */}
             <div className="flex justify-center items-center w-full h-full">
-               <div className="chart-container ml-[290px] mt-[-80px]" style={{ width: "90%", height: "350px" }}>
-                  <Line data={chartData} options={options} />
+               <div className="chart-container ml-[290px] w-[100%] h-[400px] aerolamp-history-graph-con text">
+               <Line 
+                  data={chartData} 
+                  options={options} 
+                  height={size ? 500 : undefined} 
+                  width={size ? 500 : undefined} 
+               />
                </div>
             </div>
          </div>

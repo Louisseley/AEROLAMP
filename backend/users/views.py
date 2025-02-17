@@ -64,15 +64,7 @@ class UserProfileView(viewsets.ViewSet):
 
    def list(self, request):
       """Allow authentication using a query parameter token"""
-      token_param = request.GET.get("token")  # Get token from URL
-      if not token_param:
-         return Response({"error": "Token is required in the URL"}, status=status.HTTP_401_UNAUTHORIZED)
-
-      auth_token = AuthToken.objects.filter(digest=token_param).first()
-      if not auth_token:
-         return Response({"error": "Invalid token"}, status=status.HTTP_401_UNAUTHORIZED)
-
-      user = auth_token.user
+      user = request.user
       return Response(UserSerializer(user).data, status=status.HTTP_200_OK)
    
    def retrieve(self, request, pk=None):
@@ -100,4 +92,3 @@ class UserProfileView(viewsets.ViewSet):
                "user": serializer.data
          }, status=status.HTTP_200_OK)
       return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-

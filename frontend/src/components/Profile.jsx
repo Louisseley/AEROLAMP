@@ -4,23 +4,61 @@ import { Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { useNavigate } from "react-router-dom";
 import Loading from "./Ocomponents/Loading";
-
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const Profile = () => {
    const [user, setUser] = useState(null); // Default state is null
+   const [lastData, setLastData] = useState(null)
    const navigate = useNavigate();
 
-   const data = {
-      labels: ["Good", "Moderate", "Unhealthy"],
+   const getAQIColor = (aqi) => {
+      if (aqi >= 0 && aqi <= 50) return "#4CAF50"; // Green - Good
+      if (aqi > 50 && aqi <= 100) return "#FFEB3B"; // Yellow - Moderate
+      if (aqi > 100 && aqi <= 150) return "#FF9800"; // Orange - Unhealthy for Sensitive Groups
+      if (aqi > 150 && aqi <= 200) return "#F44336"; // Red - Unhealthy
+      if (aqi > 200 && aqi <= 300) return "#9C27B0"; // Purple - Very Unhealthy
+      return "#7E0023"; // Maroon - Hazardous
+   };
+
+   const data = lastData
+   ? {
+      labels: ["Particulate Matter", "Ozone", "Carbon Monoxide", "Sulfur Dioxide", "Nitrogen Dioxide"],
       datasets: [
          {
-            data: [30, 50, 20], // Adjust values as needed
-            backgroundColor: ["#4A90E2", "#AFC6FF", "#D1DFF5"], // Adjust colors
-            hoverBackgroundColor: ["#357ABD", "#8AAFFF", "#B0C6E0"],
+            data: [
+               lastData.pm || 0,
+               lastData.o3 || 0,
+               lastData.co || 0,
+               lastData.so2 || 0,
+               lastData.no2 || 0,
+            ],
+            backgroundColor: [
+               getAQIColor(lastData.pm25),
+               getAQIColor(lastData.o3),
+               getAQIColor(lastData.co),
+               getAQIColor(lastData.so2),
+               getAQIColor(lastData.no2),
+            ],
+            hoverBackgroundColor: [
+               getAQIColor(lastData.pm25),
+               getAQIColor(lastData.o3),
+               getAQIColor(lastData.co),
+               getAQIColor(lastData.so2),
+               getAQIColor(lastData.no2),
+            ],
+         },
+      ],
+   }
+: {
+      labels: ["Particulate Matter", "Ozone", "Carbon Monoxide", "Sulfur Dioxide", "Nitrogen Dioxide"],
+      datasets: [
+         {
+            data: [0, 0, 0, 0, 0],
+            backgroundColor: ["#ccc", "#ccc", "#ccc", "#ccc", "#ccc"],
          },
       ],
    };
+
 
    const options = {
       cutout: "50%", 
@@ -50,33 +88,57 @@ const Profile = () => {
       fetchUserProfile();
    }, []);
 
+   useEffect(() => {
+      const fetchLastData = async () => {
+         try{
+            const response = await AxiosInstance.get(`aerolamp/devices/1/air-quality/`)
+            if (response.data && response.data.length > 0){
+               setLastData(response.data[response.data.length - 1])
+            }
+         } catch (error) {
+            console.error("Error fetching device data:", error);
+         }
+         
+      }
+      fetchLastData()
+   }, [])
+
+
+
    if (!user) {
       return <Loading/>
    }
 
    return (
-      <div className="bg1 flex flex-col items-center justify-start">
-         <div className="flex flex-row justify-start items-center w-[70%] mt-[120px]">
-            <img className="roundedProfile" src={user.profile_image ? `http://localhost:8000${user.profile_image}` : '../../public/images/default.jpg'} alt="profile" />
-            <div className="flex flex-col justify-start items-center ml-[20px] mb-[30px] font-inknut font-normal">
-               <h3 className="font-[25px]">Profile Information</h3>
-               <p className="font-[20px]">Manage your personal details</p>
+      <div className="bg1 w-auto h-auto flex flex-col items-center justify-start profile-box">
+         <div className="flex flex-row justify-start items-center w-[70%] mt-[80px] profile-title">
+            <img className="roundedProfile edit-profile" src={user.profile_image ? `http://localhost:8000${user.profile_image}` : '../../public/images/default.jpg'} alt="profile" />
+            <div className="flex flex-col justify-start items-center ml-[20px] mb-[30px] font-inknut font-normal profile-text">
+               <h3 className="font-[25px] text1">Profile Information</h3>
+               <p className="font-[20px] text">Manage your personal details</p>
             </div>
          </div>
-         <div className="flex flex-row justify-start items-center w-[80%] mt-[30px] font-inknut font-normal mb-[20px] ml-[70px]">
-            <p className="border3 bg-[#D4EBF8] py-[10px] pl-[5px] pr-[100px] font-[20px]">{user ? user.first_name : null} {user ? user.last_name : null}</p>
-            <p className="border3 bg-[#D4EBF8] py-[10px] pl-[5px] pr-[100px] font-[20px] ml-[50px]">
+         <div className="grid grid-cols-4 gap-[50px] w-[80%] mt-[30px] font-inknut font-normal mb-[20px] ml-[70px] items-center profile-info-box">
+            <p className="border3 bg-[#D4EBF8] py-[10px] pl-[5px] pr-[100px] font-[20px] profile-info">
+               {user ? user.first_name : null} {user ? user.last_name : null}
+            </p>
+            <p className="border3 bg-[#D4EBF8] py-[10px] pl-[5px] pr-[100px] font-[20px]">
                {user ? user.email : null}
             </p>
-            <p className="border3 bg-[#D4EBF8] py-[10px] pl-[5px] pr-[100px] font-[20px] ml-[50px]">{user ? user.phone_number : null}</p>
-            <button onClick={() => navigate('/editprofile')} className="bg-[#0A3981] cursor-pointer color px-[40px] py-[12px] font-[20px] border3 ml-[50px]">
+            <p className="border3 bg-[#D4EBF8] py-[10px] pl-[5px] pr-[100px] font-[20px]">
+               {user ? user.phone_number : null}
+            </p>
+            <button
+               onClick={() => navigate('/editprofile')}
+               className="bg-[#0A3981] cursor-pointer color px-[40px] py-[12px] font-[20px] border3"
+            >
                Edit Profile
             </button>
          </div>
-         <div className="w-[70%] h-[40%] mt-[1%] flex flex-row items-center justify-center">
-            <div className="w-[50%] h-[100%] flex flex-col">
-               <h3 className="font-inknut font-normal color text-[20px] mb-4">Air Quality Index Overview</h3>
-               <div className="w-[320px] h-[320px] mt-[-40px] ml-[40px]">
+         <div className="w-[70%] h-[40%] mt-[1%] flex flex-row items-center justify-center profile-graph">
+            <div className="w-[50%] h-[100%] flex flex-col doughnut-container ">
+               <h3 className="font-inknut font-normal color text-[20px] mb-4 profile-graph-text">Air Quality Index Overview</h3>
+               <div className="w-[350px] h-[350px] mt-[-40px] ml-[40px]">
                   <Doughnut data={data} options={options} />
                </div>
             </div>

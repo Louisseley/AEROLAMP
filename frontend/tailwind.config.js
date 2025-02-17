@@ -6,10 +6,12 @@ export default {
     "./components/**/*.{js,ts,jsx,tsx}"
   ],
   theme: {
-    extend: {
-      fontFamily: {
-        inknut: ['Inknut Antiqua', 'serif'],
-      },
+    extend: {},
+    screens: {
+      'sm': '640px',  
+      'md': '768px',  // Medium screens
+      'lg': '1024px', // Large screens
+      'xl': '1280px', // Extra large screens
     },
   },
   plugins: [],

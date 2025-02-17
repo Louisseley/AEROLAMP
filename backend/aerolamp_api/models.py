@@ -66,7 +66,7 @@ class AirQualityData(models.Model):
    # Method to save air quality data and calculate AQI
    @classmethod
    def save_air_quality_data(cls, device, ozone, pm, co, so2, no2):
-      aqi = calculate_air_quality_index(ozone, pm, co, so2, no2)
+      aqi = calculate_air_quality_index(ozone, pm, co, so2, no2)  # Calculate AQI
       data_entry = cls.objects.create(
          device=device, ozone=ozone, pm=pm, co=co, so2=so2, no2=no2, aqi=aqi
       )
