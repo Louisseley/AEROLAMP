@@ -1,9 +1,10 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.utils import timezone
 
 User = get_user_model()
 
-#Search mo actual value kupal, break point ng pollutants toh
+# Pollutant breakpoints
 OZONE_BREAKPOINTS = [(0.000, 0), (0.054, 50), (0.070, 100), (0.085, 150), (0.105, 200), (0.200, 300), (0.300, 400), (0.500, 500)]
 PM25_BREAKPOINTS = [(0.0, 0), (12.0, 50), (35.4, 100), (55.4, 150), (150.4, 200), (250.4, 300), (350.4, 400), (500.4, 500)]
 CO_BREAKPOINTS = [(0.0, 0), (4.4, 50), (9.4, 100), (12.4, 150), (15.4, 200), (30.4, 300), (40.4, 400), (50.4, 500)]
@@ -49,10 +50,10 @@ class ESP32Device(models.Model):
       return f"{self.device_name} ({self.mac_address})"
 
 
-# Model for storing Air Quality Data
+# Model for storing Air Quality Data with timezone-aware timestamps
 class AirQualityData(models.Model):
    device = models.ForeignKey(ESP32Device, on_delete=models.CASCADE, related_name='air_data')
-   timestamp = models.DateTimeField(auto_now_add=True)
+   timestamp = models.DateTimeField(default=timezone.now)  # Make sure the timestamp is timezone-aware
    ozone = models.FloatField()  # µg/m³
    pm = models.FloatField()  # µg/m³
    co = models.FloatField()  # ppm

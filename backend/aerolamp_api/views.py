@@ -39,8 +39,8 @@ class ESP32DeviceViewSet(viewsets.ModelViewSet):
       return Response({"message": "Device registered successfully.", "device_id": device.id}, status=status.HTTP_201_CREATED)
 
 
-
 # ViewSet for AirQualityData
+
 class AirQualityDataViewSet(viewsets.ModelViewSet):
    permission_classes = [IsAuthenticated]
    serializer_class = AirQualityDataSerializer
@@ -52,6 +52,49 @@ class AirQualityDataViewSet(viewsets.ModelViewSet):
       device_id = self.kwargs['device_id']
       last_24_hours = timezone.now() - timedelta(hours=24)
       return AirQualityData.objects.filter(device_id=device_id, timestamp__gte=last_24_hours).order_by('timestamp')
+
+   @action(detail=False, methods=['get'], url_path='hourly-average')
+   def hourly_average(self, request, *args, **kwargs):
+      """
+      Calculate the average AQI and pollutants for each hour.
+      """
+      device_id = self.kwargs['device_id']
+      last_24_hours = timezone.now() - timedelta(hours=24)
+
+      # Query for the last 24 hours of data and group by hour
+      hourly_data = (
+         AirQualityData.objects.filter(device_id=device_id, timestamp__gte=last_24_hours)
+         .extra(select={'hour': 'EXTRACT(HOUR FROM timestamp)'}).values('hour')
+         .annotate(
+            avg_ozone=Avg('ozone'),
+            avg_pm=Avg('pm'),
+            avg_co=Avg('co'),
+            avg_so2=Avg('so2'),
+            avg_no2=Avg('no2'),
+            avg_aqi=Avg('aqi')
+         )
+         .order_by('hour')
+      )
+
+      # Format the data to return it in the desired structure, converting timestamps to local time
+      formatted_data = [
+         {
+            'hour': entry['hour'],
+            'ozone': round(entry['avg_ozone'], 2),
+            'pm': round(entry['avg_pm'], 2),
+            'co': round(entry['avg_co'], 2),
+            'so2': round(entry['avg_so2'], 2),
+            'no2': round(entry['avg_no2'], 2),
+            'avg_aqi': round(entry['avg_aqi'], 2)
+         }
+         for entry in hourly_data
+      ]
+
+      # Ensure time is in the local timezone
+      for entry in formatted_data:
+         entry['hour'] = timezone.localtime(timezone.now()).hour  # Adjust hour to local timezone if needed
+
+      return Response(formatted_data)
 
    # Custom action for creating air quality data and calculating AQI
    @action(detail=False, methods=['post'])

@@ -6,6 +6,7 @@ import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement
 import Loading from "./Ocomponents/Loading";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+
 // Registering chart.js components
 ChartJS.register(
    CategoryScale,
@@ -26,7 +27,7 @@ const AerolampModel = () => {
    useEffect(() => {
       const fetchDeviceData = async () => {
          try {
-            const response = await AxiosInstance.get(`aerolamp/devices/${deviceId}/air-quality/`);
+            const response = await AxiosInstance.get(`aerolamp/devices/${deviceId}/air-quality/hourly-average/`);
             console.log("API Response:", response.data);
             setDeviceData(response.data);
             if (response.data && response.data.length > 0) {
@@ -48,42 +49,42 @@ const AerolampModel = () => {
       }
    }, [deviceData, navigate]);
 
-   const hours = Array.from({ length: 24 }, (_, index) => index + 1);
+   const hours = deviceData.map(entry => entry.hour); // Using the 'hour' data from the response
 
    const chartData = {
       labels: hours,
       datasets: [
          {
             label: "PM2.5 (µg/m³)",
-            data: Array.isArray(deviceData) ? deviceData.map((entry) => entry.pm) : [],
+            data: deviceData.map(entry => entry.pm), // Using 'pm' values from the response
             fill: false,
             borderColor: "#FFA500",
             tension: 0.1
          },
          {
             label: "CO (ppm)",
-            data: Array.isArray(deviceData) ? deviceData.map((entry) => entry.co) : [],
+            data: deviceData.map(entry => entry.co), // Using 'co' values from the response
             fill: false,
             borderColor: "#FF6347",
             tension: 0.1
          },
          {
             label: "Ozone (µg/m³)",
-            data: Array.isArray(deviceData) ? deviceData.map((entry) => entry.ozone) : [],
+            data: deviceData.map(entry => entry.ozone), // Using 'ozone' values from the response
             fill: false,
             borderColor: "#4682B4",
             tension: 0.1
          },
          {
             label: "SO2 (ppm)",
-            data: Array.isArray(deviceData) ? deviceData.map((entry) => entry.so2) : [],
+            data: deviceData.map(entry => entry.so2), // Using 'so2' values from the response
             fill: false,
             borderColor: "#32CD32",
             tension: 0.1
          },
          {
             label: "NO2 (ppm)",
-            data: Array.isArray(deviceData) ? deviceData.map((entry) => entry.no2) : [],
+            data: deviceData.map(entry => entry.no2), // Using 'no2' values from the response
             fill: false,
             borderColor: "#D2691E",
             tension: 0.1
@@ -135,12 +136,21 @@ const AerolampModel = () => {
       }
    };
 
-   const formatTimestamp = (timestamp) => {
-      const date = new Date(timestamp);
-      const options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true };
+   const formatTimestamp = (hour) => {
+      const date = new Date();
+      date.setHours(hour, 0, 0, 0); // Set hour based on the `hour` value
+      const options = {
+         year: 'numeric', 
+         month: 'long', 
+         day: 'numeric', 
+         hour: 'numeric', 
+         minute: 'numeric', 
+         second: 'numeric', 
+         hour12: true
+      };
       return new Intl.DateTimeFormat('en-US', options).format(date);
    };
-
+   
    const getAqiStatus = (aqi) => {
       if (aqi <= 50) return "Good";
       if (aqi <= 100) return "Moderate";
@@ -154,8 +164,8 @@ const AerolampModel = () => {
       return <Loading />;
    }
 
-   const lastDataTimestamp = lastData ? formatTimestamp(lastData.timestamp) : "";
-   const lastDataAqi = lastData ? lastData.aqi : null;
+   const lastDataTimestamp = lastData ? formatTimestamp(lastData.hour) : "";
+   const lastDataAqi = lastData ? lastData.avg_aqi : null; // Use avg_aqi instead of aqi
    const lastDataAqiStatus = lastDataAqi ? getAqiStatus(lastDataAqi) : "";
 
    return (
@@ -169,7 +179,7 @@ const AerolampModel = () => {
                <div className="w-full sm:w-[100%] flex-col h-full flex items-center justify-center mt-[5%] aerolamp-data-text-container">
                   <h3 className="text-[20px] bg-[#D4EBF8] px-[40px] py-[10px] text-center">{lastDataTimestamp}</h3>
                   <h3 className="text-[20px] bg-[#D4EBF8] w-[150px] py-[10px] text-center mt-[2%] text1">Data Result</h3>
-                  <div className="flex flex-row items-center justify-between w-[70%] h-[50px] mt-[5%] aerolamp-text-below ">
+                  <div className="flex flex-row items-center justify-between w-[70%] h-[50px] mt-[5%] aerolamp-text-below">
                      <h3 className="text-[20px] bg-[#F3BA52A6] w-[30%] h-[40px] flex items-center justify-center">{lastDataAqi}</h3>
                      <h3 className="text-[20px] bg-[#F3BA52A6] w-[65%] h-[40px] flex items-center justify-center text">{lastDataAqiStatus}</h3>
                   </div>
@@ -188,4 +198,3 @@ const AerolampModel = () => {
 };
 
 export default AerolampModel;
-

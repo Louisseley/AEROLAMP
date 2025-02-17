@@ -5,6 +5,24 @@ from datetime import timedelta
 import os
 import environ
 
+# settings.py
+
+# Enable timezone support
+USE_TZ = True
+
+# Set the default time zone for your project (Asia/Manila for Philippines)
+TIME_ZONE = 'Asia/Manila'
+
+# If you want to use the timezone for logging and other functionalities
+LANGUAGE_CODE = 'en-us'
+USE_I18N = True
+USE_L10N = True
+USE_TZ = True
+
+# If you want to have the timezone-aware date-time fields
+TIME_ZONE = 'Asia/Manila'  # Adjust to your timezone
+
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 env = environ.Env()
 environ.Env.read_env(str(BASE_DIR / '.env'))
