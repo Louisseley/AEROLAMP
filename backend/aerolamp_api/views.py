@@ -102,12 +102,20 @@ class AirQualityDataViewSet(viewsets.ModelViewSet):
       """
       Receive air quality data from ESP32 and save it with calculated AQI.
       """
+      # Use the AirQualityDataCreateSerializer to validate the input data
       serializer = AirQualityDataCreateSerializer(data=request.data)
+      
       if serializer.is_valid():
-         air_quality_data = serializer.save()  # This will use the save_air_quality_data method to calculate AQI
+         # This will use the save_air_quality_data method to calculate AQI and save the data
+         air_quality_data = serializer.save()
+         
+         # Serialize the saved air quality data to return the response
          response_serializer = AirQualityDataSerializer(air_quality_data)
          return Response(response_serializer.data, status=status.HTTP_201_CREATED)
+      
+      # Return validation errors if serializer is invalid
       return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 # ViewSet for AirQualityData History (monthly)

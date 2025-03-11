@@ -22,6 +22,7 @@ const AerolampModel = () => {
    const { deviceId } = useParams(); // Get the deviceId from the URL
    const [deviceData, setDeviceData] = useState([]);
    const [lastData, setLastData] = useState(null); // To store the latest data
+   const [relayStatus, setRelayStatus] = useState("OFF");
    const navigate = useNavigate();
 
    useEffect(() => {
@@ -48,6 +49,28 @@ const AerolampModel = () => {
          return () => clearTimeout(timer);
       }
    }, [deviceData, navigate]);
+
+   useEffect(() => {
+      fetchRelayStatus();
+   }, []);
+
+   const fetchRelayStatus = async () => {
+      try {
+      const response = await AxiosInstance.get(`appcontrol/device/${deviceId}/relay-status/`);
+      setRelayStatus(response.data.relay_status);
+   } catch (error) {
+      console.error("Error fetching relay status", error);
+   }
+   };
+   const toggleRelay = async () => {
+   const newStatus = relayStatus === "ON" ? "OFF" : "ON";
+   try {
+      await AxiosInstance.post(`appcontrol/device/${deviceId}/set-relay/`, { device_id: `${deviceId}`, relay_status: newStatus });
+      setRelayStatus(newStatus);
+   } catch (error) {
+      console.error("Error updating relay", error);
+   }
+   };
 
    const hours = deviceData.map(entry => entry.hour); // Using the 'hour' data from the response
 
@@ -183,10 +206,16 @@ const AerolampModel = () => {
                      <h3 className="text-[20px] bg-[#F3BA52A6] w-[30%] h-[40px] flex items-center justify-center">{lastDataAqi}</h3>
                      <h3 className="text-[20px] bg-[#F3BA52A6] w-[65%] h-[40px] flex items-center justify-center text">{lastDataAqiStatus}</h3>
                   </div>
+                  <button className="w-[25%] h-[40px] flex flex-row justify-center items-center font-inknut font-normal text-[16px] cursor-pointer mt-[2%] aerolamp-but"
+                        style={{ backgroundColor: relayStatus === "ON" ? "#4CAF50" : "#F44336" }} 
+                        onClick={toggleRelay}>
+                     <img className="w-[30px] h-[30px]" src="../../public/icons/light.png" alt="" />
+                     {relayStatus === "ON" ? "Turn OFF" : "Turn ON"}
+                  </button>
                   <Link
                      key={deviceId}
                      to={`/aerolamp/history/${deviceId}`}
-                     className="text-[20px] bg-[#24549D] w-[35%] h-[40px] flex items-center justify-center rounded mt-[5%] hover:opacity-30 cursor-pointer no-underline color aerolamp-but"
+                     className="text-[20px] bg-[#24549D] w-[35%] h-[40px] flex items-center justify-center rounded mt-[2%] hover:opacity-30 cursor-pointer no-underline color aerolamp-but"
                   >
                      Data History
                   </Link>

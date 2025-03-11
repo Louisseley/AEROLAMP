@@ -18,9 +18,12 @@ class AirQualityDataSerializer(serializers.ModelSerializer):
 
    class Meta:
       model = AirQualityData
-      fields = ['id', 'device', 'ozone', 'pm', 'co', 'so2', 'no2', 'aqi', 'timestamp', 'aqi_status']  # Include aqi_status here, no need to declare it as a model field
+      fields = ['id', 'device', 'ozone', 'pm', 'co', 'so2', 'no2', 'aqi', 'timestamp', 'aqi_status']
 
    def get_aqi_status(self, obj):
+      # Handle the case when aqi is None
+      if obj.aqi is None:
+         return "AQI not calculated"  # You can adjust this message based on your needs
       if obj.aqi <= 50:
          return "Good"
       elif obj.aqi <= 100:
@@ -33,6 +36,7 @@ class AirQualityDataSerializer(serializers.ModelSerializer):
          return "Very Unhealthy"
       else:
          return "Hazardous"
+
 
 
 # Serializer to store Air Quality data via the API
@@ -79,8 +83,10 @@ class AirQualityDataCreateSerializer(serializers.Serializer):
       so2 = validated_data['so2']
       no2 = validated_data['no2']
 
-      # Calculate AQI using the validated data
-      aqi = calculate_air_quality_index(ozone, pm, co, so2, no2)  # Get the AQI value
+      # Debugging: Check the validated data before passing it to the model
+      print(f"Validated data: {validated_data}")
 
-      # Save the air quality data entry with the calculated AQI
+      # Do not calculate AQI here. The AQI will be calculated in `save_air_quality_data` method of the model.
+      # Just pass the validated data to the model's method.
       return AirQualityData.save_air_quality_data(device, ozone, pm, co, so2, no2)
+

@@ -8,7 +8,7 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 
 const Profile = () => {
    const [user, setUser] = useState(null); // Default state is null
-   const [lastData, setLastData] = useState(null)
+   const [lastData, setLastData] = useState(null);
    const navigate = useNavigate();
 
    const getAQIColor = (aqi) => {
@@ -102,7 +102,6 @@ const Profile = () => {
       }
       fetchLastData()
    }, [])
-
 
 
    if (!user) {

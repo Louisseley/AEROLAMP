@@ -30,10 +30,11 @@ environ.Env.read_env(str(BASE_DIR / '.env'))
 SECRET_KEY = env("SECRET_KEY")
 
 DEBUG = True
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 INSTALLED_APPS = [
+    'channels',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -42,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'aerolamp_api',
     'users',
+    'AppControl',
     'rest_framework',
     'corsheaders',
     'knox',
@@ -122,10 +124,17 @@ EMAIL_HOST_PASSWORD = "ygbt ghxq gmes estk"
 
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
+
 # Static files and other Django settings
 STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_URL = 'media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+ASGI_APPLICATION = 'backend.asgi.application'
 
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
+    },
+}
