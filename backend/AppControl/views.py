@@ -40,4 +40,3 @@ def set_relay_status(request, device_id):
       return Response({"message": "Relay updated", "relay_status": device.relay_status})
    except Exception as e:
       return Response({"error": str(e)}, status=400)
-

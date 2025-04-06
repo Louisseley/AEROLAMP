@@ -7,7 +7,8 @@ class AirQualityDataInline(admin.TabularInline):
    """
    model = AirQualityData
    extra = 1  # Number of empty forms to show by default
-   fields = ('ozone', 'pm', 'co', 'so2', 'no2', 'aqi')  # Exclude timestamp here
+   fields = ('ozone', 'pm25', 'pm10', 'co', 'so2', 'no2')  # Updated to pm25 and pm10
+   exclude = ['aqi'] 
 
 class ESP32DeviceAdmin(admin.ModelAdmin):
    """
@@ -24,7 +25,8 @@ class AirQualityDataAdmin(admin.ModelAdmin):
    """
    Custom Admin interface for the AirQualityData model.
    """
-   list_display = ('device', 'timestamp', 'ozone', 'pm', 'co', 'so2', 'no2', 'aqi')
+   list_display = ('device', 'timestamp', 'ozone', 'pm25', 'pm10', 'co', 'so2', 'no2',)  # Updated to pm25 and pm10
+   exclude = ['aqi'] 
    list_filter = ('device', 'timestamp')
    search_fields = ('device__device_name', 'timestamp')
    ordering = ('-timestamp',)  # Order by latest timestamp

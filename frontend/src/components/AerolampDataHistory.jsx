@@ -21,7 +21,7 @@ const AerolampDataHistory = () => {
    const [selectedYear, setSelectedYear] = useState(new Date().getFullYear()); // Default to current year
    const [monthlyData, setMonthlyData] = useState([]);
    const [size, setSize] = useState(false);
-   const navigate = useNavigate()
+   const navigate = useNavigate();
 
    useEffect(() => {
       const fetchData = async () => {
@@ -46,8 +46,15 @@ const AerolampDataHistory = () => {
       datasets: [
          {
             label: "PM2.5 (µg/m³)",
-            data: monthlyData.map((entry) => entry.pm || 0),
+            data: monthlyData.map((entry) => entry.pm25 || 0), // Updated to pm25
             borderColor: "#FFA500",
+            fill: false,
+            tension: 0.1
+         },
+         {
+            label: "PM10 (µg/m³)",
+            data: monthlyData.map((entry) => entry.pm10 || 0), // Added pm10
+            borderColor: "#FF6347",
             fill: false,
             tension: 0.1
          },
@@ -109,6 +116,7 @@ const AerolampDataHistory = () => {
          }
       }
    };
+
    useEffect(() => {
       const handleResize = () => {
          if (window.innerWidth <= 360 && window.innerHeight <= 640) {
@@ -133,18 +141,14 @@ const AerolampDataHistory = () => {
       if (!monthlyData || monthlyData.length === 0) {
          const timer = setTimeout(() => {
             navigate("/aerolamp")
-         }, 5000) 
+         }, 5000);
          return () => clearTimeout(timer);
       }
-   }, [monthlyData, navigate])
-
+   }, [monthlyData, navigate]);
 
    if (!monthlyData || monthlyData.length === 0) {
       return <Loading />;
    }
-
-   
-
 
    return (
       <div className="bg1 flex flex-col items-start font-inknut font-normal w-full h-full aerolamp-history-container">
@@ -173,12 +177,12 @@ const AerolampDataHistory = () => {
             {/* Graph Display */}
             <div className="flex justify-center items-center w-full h-full">
                <div className="chart-container ml-[290px] w-[100%] h-[400px] aerolamp-history-graph-con text">
-               <Line 
-                  data={chartData} 
-                  options={options} 
-                  height={size ? 500 : undefined} 
-                  width={size ? 500 : undefined} 
-               />
+                  <Line 
+                     data={chartData} 
+                     options={options} 
+                     height={size ? 500 : undefined} 
+                     width={size ? 500 : undefined} 
+                  />
                </div>
             </div>
          </div>

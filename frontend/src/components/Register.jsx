@@ -86,7 +86,6 @@ const Register = () => {
                <h3 className="font-inknut text-[30px] font-normal color ml-[10px] text2">Aerolamp</h3>
             </div>
             <h1 className="font-inknut text-[28px] font-normal color mt-[5%] signup">Sign up</h1>
-            <h3 onClick={() => navigate('/login')} className='link text-[12px] cursor-pointer login1'>Login</h3>
             <p className="font-inknut text-[16px] font-normal color mt-[1%] text w-auto">Please enter your Email and Password</p>
             <form onSubmit={handleSubmit(submission)} className="w-[100%] h-[100%] flex flex-col items-center justify-center">
                {errors.email && <p className="text-[#F87171] text-sm mt-[5px]">{errors.email.message}</p>}
@@ -134,7 +133,8 @@ const Register = () => {
                         accept="image/jpeg, image/png"
                      />
                </div>
-               <button type={"submit"} className="font-inknut font-normal text-[20px] px-[10px] py-[5px] round mt-[5%] cursor-pointer text1">Sign Up</button>
+               <button type={"submit"} className="font-inknut font-normal text-[20px] px-[10px] py-[5px] round mt-[5%] mb-[10px] cursor-pointer text1 hover:opacity-50 hover:font-bold">Sign Up</button>
+               <button onClick={() => navigate('/login')} className='text-[#000000] border border-white bg-transparent text-[16px] h-[25px] w-[80px] cursor-pointer hover:text-[#0000a1]'>Login</button>
             </form>
          </div>
       </div>

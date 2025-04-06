@@ -15,6 +15,7 @@ import AerolampModel from './components/AerolampModel'
 import AerolampDataHistory from './components/AerolampDataHistory'
 import {Routes, Route, useLocation } from 'react-router-dom'
 import ProtectedRoute from './components/ProtectedRoutes'
+import { DeviceProvider } from './components/context/DeviceContect'
 
 function App() {
   const location = useLocation();
@@ -22,23 +23,25 @@ function App() {
   return (
     <>
       {showNavbar && <Navbar />} 
-      <Routes>
-        <Route path="/" element={<SignorLogin/>}/> 
-        <Route path="/login" element={<Login/>}/>
-        <Route path="/register" element={<Register/>}/>
-        <Route path="/forgotpassword" element={<ForgotPassword/>}/>
-        <Route path="/password-reset/:token" element={<PasswordReset/>}/> 
-        <Route  element={<ProtectedRoute/>}>
-          <Route path="/home" element={<Home/>}/> 
-          <Route path="/about" element={<About/>}/>
-          <Route path="/profile" element={<Profile/>}/>
-          <Route path="/editprofile" element={<EditProfile/>}/>
-          <Route path="/aerolamp" element={<Aerolamp/>}/>
-          <Route path="/aerolamp/:deviceId" element={<AerolampModel />} />
-          <Route path="/aerolamp/history/:deviceId" element={<AerolampDataHistory />}/>
-          <Route path="/logout" element={<Logout/>}/>
-        </Route>
-      </Routes>
+      <DeviceProvider>
+        <Routes>
+          <Route path="/" element={<SignorLogin/>}/> 
+          <Route path="/login" element={<Login/>}/>
+          <Route path="/register" element={<Register/>}/>
+          <Route path="/forgotpassword" element={<ForgotPassword/>}/>
+          <Route path="/password-reset/:token" element={<PasswordReset/>}/> 
+          <Route  element={<ProtectedRoute/>}>
+            <Route path="/home" element={<Home/>}/> 
+            <Route path="/about" element={<About/>}/>
+            <Route path="/profile" element={<Profile/>}/>
+            <Route path="/editprofile" element={<EditProfile/>}/>
+            <Route path="/aerolamp" element={<Aerolamp/>}/>
+            <Route path="/aerolamp/:deviceId" element={<AerolampModel />} />
+            <Route path="/aerolamp/history/:deviceId" element={<AerolampDataHistory />}/>
+            <Route path="/logout" element={<Logout/>}/>
+          </Route>
+        </Routes>
+      </DeviceProvider>
     </>
   )
 }

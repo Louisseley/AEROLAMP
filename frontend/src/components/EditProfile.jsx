@@ -83,7 +83,7 @@ const EditProfile = () => {
 
    return (
       <>
-         <div onClick={() => { navigate('/profile'); }} className="w-[200px] h-[50px] cursor-pointer fixed left-[20px] top-[70px] z-10 flex flex-row items-center edit-profile-back">
+         <div onClick={() => { navigate('/profile'); }} className="w-[200px] h-[50px] cursor-pointer fixed left-[20px] top-[70px] z-10 flex flex-row items-center edit-profile-back hover:opacity-50">
             <img className="w-[30px] h-[30px] edit-profile-img" src="../../public/icons/back.png" alt="" />
             <h3 className="text-[22px] ml-[10px]  ">Back</h3>
          </div>
@@ -97,7 +97,7 @@ const EditProfile = () => {
             <input className="w-[20%] px-[10px] py-[5px] mt-[20px] edit-profile-input" value={updatedUser.first_name} name="first_name" onChange={handleInputChange} type="text" placeholder="First Name" />
             <input className="w-[20%] px-[10px] py-[5px] mt-[20px] edit-profile-input" value={updatedUser.last_name} name="last_name" onChange={handleInputChange} type="text" placeholder="Last Name" />
             <input className="w-[20%] px-[10px] py-[5px] mt-[20px] edit-profile-input" value={updatedUser.phone_number} name="phone_number" onChange={handleInputChange} type="text" placeholder="Phone Number" />
-            <button onClick={handleUpdateProfile} className="border-[#0A3981] px-[30px] py-[8px] color cursor-pointer bg-[#0A3981] mt-[40px] margin-right">
+            <button onClick={handleUpdateProfile} className="w-[21.5%] border-[#0A3981] px-[30px] py-[8px] color cursor-pointer bg-[#0A3981] mt-[40px] margin-right confirm-but rounded-[5px]">
                Confirm
             </button>
          </div>

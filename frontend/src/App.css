@@ -93,6 +93,11 @@ p, h1, h2, h3, h4, h5, h6{
    z-index: 10;
 }
 
+.home-button:hover{
+   background-color: #2432f0;
+   color: white;
+}
+
 .hr{
    border-bottom: 5px solid white;
 }
@@ -149,6 +154,141 @@ p, h1, h2, h3, h4, h5, h6{
    border-radius: 50%;
    animation: spin 1s linear infinite; /* Animation for rotating */
  }
+
+ .button-intro{
+   border: 2px solid transparent;
+ }
+
+ .button-intro:hover{
+   color: #3C619A;
+   background-color: white;
+   border: 2px solid #3C619A;
+ }
+
+ .aerolamp:hover img{
+   width: 70%;
+   height: 70%;
+   transition: 0.3s ease-in-out;
+ }
+
+ .aerolamp-but{
+   border: 2px solid transparent;
+ }
+
+ .aerolamp-but:hover{
+   color: white;
+   border: 2px solid white;
+ }
+
+.confirm-but:hover{
+   color: #2432f0;
+   background-color: white;
+   border: 1px solid #2432f0;
+}
+ .nav:hover{
+   color: #2432f0;
+   background-color: white;
+ }
+
+ .white{
+   background-color: white;
+   margin-left: 20px;
+   border-radius: 10px;
+   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+   padding: 10px 10px;
+   padding-bottom: 15px;
+   position: relative;
+ }
+
+ .table-col{
+   width: 100%;
+   overflow-y: auto;
+ }
+
+ .table-col thead tr{
+   font-size: 14px;
+   font-weight: 500;
+   text-align: center;
+   height: 16px;
+   width: 150px;
+   background-color: #2432f0;
+ }
+
+ .table-col tbody{
+   font-size: 12px;
+   font-weight: 400;
+   text-align: center;
+   height: 16px;
+   width: 150px;
+   background-color: #2d91e4;
+ }
+
+ .pagination{
+   display: flex;
+   flex-direction: row;
+   align-items: center;
+   position: absolute;
+   bottom: 10px;
+   right: 40%;
+ }
+
+ .pagination h1{
+   font-size: 16px;
+   font-weight: 500;
+   width: 90px;
+   text-align: center;
+ }
+
+ .pagination button{
+   border: none;
+   background-color: none;
+   height: 20px;
+   width: 20px;
+   border-radius: 10px;
+   cursor: pointer;
+   background-color: #2d91e4;
+   margin: 0 5px;
+ }
+
+ .table-but{
+   position: absolute;
+   width: 150px;
+   height: 30px;
+   color: white;
+   font-size: 16px;
+   font-weight: 700;
+   background-color: #2d91e4;
+   border-radius: 5px;
+   border: none;
+   top: 90px;
+   left: 50px;
+   cursor: pointer;
+   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+   transition: 0.3s ease-in-out;
+ }
+
+ .table-but:hover{
+   color: #2d91e4;
+   background-color: white;
+ }
+
+ @keyframes slideInUp {
+   0% {
+      opacity: 0;
+      transform: translateY(50px); 
+   }
+   100% {
+      opacity: 1;
+      transform: translateY(0); 
+   }
+}
+
+.aerolamp-device{
+   position: relative;
+   opacity: 0; 
+   transform: translateY(50px); 
+   animation: slideInUp 1s ease-out forwards; 
+}
  
  /* Animation to spin the element */
  @keyframes spin {
@@ -402,13 +542,38 @@ p, h1, h2, h3, h4, h5, h6{
       height: 120vh;
       overflow-y: auto;
    }
+   .table-but{
+      left: 10px;
+      top: 130px;
+      width: 80px;
+      font-size: 12px;
+      height: 20px;
+   }
+
+   .table1{
+      width: 300px;
+      margin-top: 40px;
+      height: 600px;
+      margin-bottom: -90px;
+   }
+
+   .table-col thead th{
+      font-size: 12px;
+   }
+
+   .pagination{
+      right: 32%;
+   }
+
    .aerolamp-data-graph-container{
       flex-direction: column;
+      margin-top: 20px;
    }
    .aerolamp-data-text-container{
       margin-top: 20px;
       width: 80%;
       margin-left: 35px;
+      margin-bottom: 20px;
    }
    .aerolamp-text-below{
       font-size: 11px;
@@ -439,5 +604,12 @@ p, h1, h2, h3, h4, h5, h6{
       margin-left: 15px;
       margin-right: 20px;
       height: 350px;
+   }
+   .aqi-box{
+      flex-direction: column;
+      height: 250px;
+   }
+   .value{
+      margin-top: 3px;
    }
 }

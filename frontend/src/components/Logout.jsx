@@ -21,8 +21,8 @@ function Logout() {
             </div>
             <h3 className="text-[28px] mt-[10%]">Logout</h3>
             <div className="flex flex-row items-center justify-between w-[80%] mt-[10%]">
-               <button onClick={() => {navigate('/home')}} className="w-[150px] h-[40px] round bg-[#F87171] text-[20px] font-medium cursor-pointer text1">Back</button>
-               <button onClick={logoutUser} className="w-[150px] h-[40px] round bg-[#1E3A8A] text-[20px] font-medium cursor-pointer logout-box">Confirm</button>
+               <button onClick={() => {navigate('/home')}} className="w-[150px] h-[40px] round bg-[#F87171] text-[20px] font-medium cursor-pointer text1 hover:text-[#F87171] hover:bg-transparent hover:border-[#F87171] hover:border">Back</button>
+               <button onClick={logoutUser} className="w-[150px] h-[40px] round bg-[#1E3A8A] text-[20px] font-medium cursor-pointer logout-box hover:text-[#1E3A8A] hover:bg-transparent hover:border-[#1E3A8A] hover:border">Confirm</button>
             </div>
          </div>
       </div>   
