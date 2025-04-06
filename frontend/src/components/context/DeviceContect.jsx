@@ -1,6 +1,7 @@
 // src/components/context/DeviceContext.js
 
 import { createContext, useState, useContext } from 'react';
+import PropTypes from 'prop-types';  // Import PropTypes for prop validation
 
 // Create a Context for the device
 const DeviceContext = createContext();
@@ -14,6 +15,11 @@ export const DeviceProvider = ({ children }) => {
          {children}
       </DeviceContext.Provider>
    );
+};
+
+// PropTypes validation for the `children` prop
+DeviceProvider.propTypes = {
+   children: PropTypes.node.isRequired,  // `children` should be a valid React node
 };
 
 // Export the custom hook that uses the DeviceContext
